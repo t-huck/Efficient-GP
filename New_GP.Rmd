@@ -5,8 +5,9 @@ output: html_notebook
 
 
 ```{r}
-library(rstan)
-n <- 500
+install.packages("tidyverse", "rstan")
+library(rstan, tidyverse)
+n <- 200
 m <- 10
 x1 <- rnorm(n, mean = 0, sd = 5)
 x2 <- x1 + 3
@@ -15,39 +16,15 @@ y<- x3+.8*x1+rnorm(n, mean = 0, sd = .5)
 data <- data.frame(x1, x2, x3)
 x1s <- rnorm(m, mean = 0, sd = 5)
 x2s <- x1s + 3
-x3s <- 2*x2s+x1s + .1
-ys <- x3s+.8*x1s+rnorm(n, mean = 0, sd = .5)
+x3s <- 2*x2s+x1s +  rnorm(m, mean = 0, sd = .1)
+ys <- x3s+.8*x1s+rnorm(m, mean = 0, sd = .5)
 data_pred <- data.frame(x1s, x2s, x3s)
 ```
 
 
 ```{r}
-simu_data <- list(N = n,D =  3, M = m, x = data,y = y, x_pred =data_pred, ell= c(2, .5, 1),  sf=1,  sn=1e-5)
+simu_data <- list(N = n,D =  3, M = m, x = data,y = y, x_pred = data_pred, ell= c(2, .5, 1),  sf=1,  sn=1e-5)
 ```
-
-```{r}
-writeLines(readLines("Algorithm_1.stan"))
-GP_fit <- stan(file='Algorithm_1.stan', data=simu_data,
-                 warmup=0, iter=4000, chains=1, seed=494838,
-                 algorithm="Fixed_param", refresh=1000)
-```
-
-```{r}
-sample = extract(GP_fit, pars = c('y_pred', 'eta'))
-#print(sample$y_pred[3214,])
-print(sample$y_pred[19,])
-print(sample$eta[19,])
-print(y)
-```
-
-```{r}
-print(head(data_pred))
-print(head(sample$y_pred[23,]))
-print(head(ys))
-print(head(data))
-print(head(y))
-```
-
 
 
 ```{r}
@@ -62,3 +39,28 @@ simu_fit <- stan(file='sandbox.stan', data=sandbox_data,
                  warmup=0, iter=4000, chains=1, seed=494838,
                  algorithm="Fixed_param", refresh=1000)
 ```
+
+```{r}
+writeLines(readLines("Algorithm_1.stan"))
+GP_fit <- stan(file='Algorithm_1.stan', data=simu_data,
+                 warmup=0, iter=4000, chains=1, seed=494838,
+                 algorithm="Fixed_param", refresh=100)
+```
+
+```{r}
+sample = extract(GP_fit, pars = c('y_pred', 'eta'))
+#print(sample$y_pred[3214,])
+print(sample$y_pred[199,])
+print(ys)
+```
+
+```{r}
+train <- data.frame(x1, y)[order(x1),]
+test <- data.frame(x1s, ys)[order(x1s),]
+test_dat <- data.frame("x1" = test[,1], "y" = NA)
+input_data <- rbind(test_dat, train)[order(x1),]
+A <- matrix(c(0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, -lambda^4, -4*lambda^3, -6*lambda^2, -4*lambda), nrow = 4, byrow = TRUE)#Approximate solution for quad-exp given for Matern(7/2) kernel
+```
+
+
+
