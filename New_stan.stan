@@ -2,8 +2,9 @@ data {
   int<lower=1> N;
   int<lower=1> D;
   int<lower=1> M;
+  real y[N];
   vector[D] x[N];
-  vector[D] xpred[M];
+  vector[D] x_pred[M];
 
   vector[D] ell;
   real<lower=0> sf;
@@ -11,15 +12,28 @@ data {
 }
 
 transformed data{
-  matrix[N, N] Kn =   cov_exp_quad(x[N]./ell, sf, 1)
+  vector[D] s[N];
+  matrix[N,N] K;
+  vector[D] s_pred[N];
+  matrix[N, N] Kn;
+  matrix[N, N] L;
+  real alpha[N];
+  matrix[N, M] Kmn;
+  for (n in 1:N) {
+    s[n] = x[n].* ell;
+  }
+  for (n in 1:N) {
+    s_pred[n] = x_pred[n].* ell;
+  }
+  Kn =   cov_exp_quad(s, sf, 1.0)
                      + diag_matrix(rep_vector(sn, N));
-  matrix[N, N] L = cholesky_decompose(cov);
-  real alpha[N] = algebra_solver(solver, 1, L', algebra_solver(solver, 1, L, y))
-  matrix[N, Np] Kmn =   cov_exp_quad(x[N]./ell, xpred[N]./ell, sf, 1);
-  matrix[Np, Np] Km =   cov_exp_quad(xpred[N]./ell, sf, 1);
-  matrix[N, Np] V = algebra_solver(solver, 1, L, Kmn);
+  L = cholesky_decompose(Kn);
+  alpha = algebra_solver(solver, 1, L', algebra_solver(solver, 1, L , y))
+  Kmn =   cov_exp_quad(s[N]./ell, s_pred[N]./ell, sf, 1);
+  matrix[M, M] Km =   cov_exp_quad(s_pred[N]./ell, sf, 1);
+  matrix[N, M] V = algebra_solver(solver, 1, L, Kmn);
   real mu[N] = Kmn*alpha;
-  matrix[Np, Np] S = Km - V'*V;
+  matrix[M, M] S = Km - V'*V;
 }
 
 parameters {
