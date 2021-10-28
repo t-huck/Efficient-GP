@@ -40,9 +40,7 @@ transformed data{
   Km =   cov_exp_quad(s_pred, sf, 1.0);
   V = mdivide_left_tri_low(L, Kmn);
   mu = Kmn'*alpha;
-  print(mu);
   S = Km - V'*V;
-  print(S);
   Lm = cholesky_decompose(S);
 }
 
