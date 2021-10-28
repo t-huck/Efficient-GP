@@ -14,7 +14,7 @@ data {
 transformed data{
   vector[D] s[N];
   matrix[N,N] K;
-  vector[D] s_pred[N];
+  vector[D] s_pred[M];
   matrix[N, N] Kn;
   matrix[N, N] L;
   vector[N] alpha;
@@ -22,15 +22,15 @@ transformed data{
   vector[N] y_vec;
   matrix[M, M] Km;
   matrix[N, M] V;
-  vector[N] mu;
+  vector[M] mu;
   matrix[M, M] S;
   matrix[M, M] Lm;
   for (n in 1:N) {
     s[n] = x[n].* ell;
     y_vec[n] = y[n];
   }
-  for (n in 1:M) {
-    s_pred[n] = x_pred[n].* ell;
+  for (m in 1:M) {
+    s_pred[m] = x_pred[m].* ell;
   }
   Kn =   cov_exp_quad(s, sf, 1.0)
                      + diag_matrix(rep_vector(sn, N));
@@ -39,8 +39,10 @@ transformed data{
   Kmn =   cov_exp_quad(s, s_pred, sf, 1.0);
   Km =   cov_exp_quad(s_pred, sf, 1.0);
   V = mdivide_left_tri_low(L, Kmn);
-  mu = Kmn*alpha;
+  mu = Kmn'*alpha;
+  print(mu);
   S = Km - V'*V;
+  print(S);
   Lm = cholesky_decompose(S);
 }
 
@@ -54,6 +56,8 @@ model {
 
 generated quantities{
   vector[M] y_pred;
+  vector[D] x_pred_out[M];
+  x_pred_out = x_pred;
   y_pred = Lm*eta + mu;
 }
 

@@ -36,7 +36,7 @@ par(family="CMU Serif", las=1, bty="l", cex.axis=1, cex.lab=1, cex.main=1,
     xaxs="i", yaxs="i", mar = c(5, 5, 3, 5))
 ```
 
-Now we generate out data:
+Now we generate our data:
 
 ```{r gen-data}
 n <- 30

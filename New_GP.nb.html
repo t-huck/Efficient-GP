@@ -217,34 +217,36 @@ pre code {
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShyc3Rhbilcbm4gPC0gNVxueDEgPC0gcm5vcm0obiwgbWVhbiA9IDAsIHNkID0gNSlcbngyIDwtIHgxICsgcm5vcm0obiwgbWVhbiA9IDAsIHNkID0gMSlcbngzIDwtIDIqeDIreDErIHJub3JtKG4sIG1lYW4gPSAwLCBzZCA9IC4xKVxueTwtIHgzKy4wOCp4MStybm9ybShuLCBtZWFuID0gMCwgc2QgPSAuNSlcbmRhdGEgPC0gZGF0YS5mcmFtZSh4MSwgeDIsIHgzKVxueDFzIDwtIHJub3JtKG4sIG1lYW4gPSAwLCBzZCA9IDQpXG54MnMgPC0gcm5vcm0obiwgbWVhbiA9IDAsIHNkID0gNClcbngzcyA8LSAyKngyK3gxICsgLjJcbmRhdGFfcHJlZCA8LSBkYXRhLmZyYW1lKHgxcywgeDJzLCB4M3MpXG5gYGAifQ== -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShyc3Rhbilcbm4gPC0gNTAwXG5tIDwtIDEwXG54MSA8LSBybm9ybShuLCBtZWFuID0gMCwgc2QgPSA1KVxueDIgPC0geDEgKyAzXG54MyA8LSAyKngyK3gxKyBybm9ybShuLCBtZWFuID0gMCwgc2QgPSAuMSlcbnk8LSB4MysuOCp4MStybm9ybShuLCBtZWFuID0gMCwgc2QgPSAuNSlcbmRhdGEgPC0gZGF0YS5mcmFtZSh4MSwgeDIsIHgzKVxueDFzIDwtIHJub3JtKG0sIG1lYW4gPSAwLCBzZCA9IDUpXG54MnMgPC0geDFzICsgM1xueDNzIDwtIDIqeDJzK3gxcyArIC4xXG55cyA8LSB4M3MrLjgqeDFzK3Jub3JtKG4sIG1lYW4gPSAwLCBzZCA9IC41KVxuZGF0YV9wcmVkIDwtIGRhdGEuZnJhbWUoeDFzLCB4MnMsIHgzcylcbmBgYCJ9 -->
 <pre class="r"><code>library(rstan)
-n &lt;- 5
+n &lt;- 500
+m &lt;- 10
 x1 &lt;- rnorm(n, mean = 0, sd = 5)
-x2 &lt;- x1 + rnorm(n, mean = 0, sd = 1)
+x2 &lt;- x1 + 3
 x3 &lt;- 2*x2+x1+ rnorm(n, mean = 0, sd = .1)
-y&lt;- x3+.08*x1+rnorm(n, mean = 0, sd = .5)
+y&lt;- x3+.8*x1+rnorm(n, mean = 0, sd = .5)
 data &lt;- data.frame(x1, x2, x3)
-x1s &lt;- rnorm(n, mean = 0, sd = 4)
-x2s &lt;- rnorm(n, mean = 0, sd = 4)
-x3s &lt;- 2*x2+x1 + .2
+x1s &lt;- rnorm(m, mean = 0, sd = 5)
+x2s &lt;- x1s + 3
+x3s &lt;- 2*x2s+x1s + .1
+ys &lt;- x3s+.8*x1s+rnorm(n, mean = 0, sd = .5)
 data_pred &lt;- data.frame(x1s, x2s, x3s)</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc2ltdV9kYXRhIDwtIGxpc3QoTiA9IG4sRCA9ICAzLCBNID0gbiwgeCA9IGRhdGEseSA9IHksIHhfcHJlZCA9ZGF0YV9wcmVkLCBlbGw9IGMoMiwgMywgMSksICBzZj0xLCAgc249MWUtMTApXG5gYGAifQ== -->
-<pre class="r"><code>simu_data &lt;- list(N = n,D =  3, M = n, x = data,y = y, x_pred =data_pred, ell= c(2, 3, 1),  sf=1,  sn=1e-10)</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc2ltdV9kYXRhIDwtIGxpc3QoTiA9IG4sRCA9ICAzLCBNID0gbSwgeCA9IGRhdGEseSA9IHksIHhfcHJlZCA9ZGF0YV9wcmVkLCBlbGw9IGMoMiwgLjUsIDEpLCAgc2Y9MSwgIHNuPTFlLTUpXG5gYGAifQ== -->
+<pre class="r"><code>simu_data &lt;- list(N = n,D =  3, M = m, x = data,y = y, x_pred =data_pred, ell= c(2, .5, 1),  sf=1,  sn=1e-5)</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxud3JpdGVMaW5lcyhyZWFkTGluZXMoXCJOZXdfc3Rhbi5zdGFuXCIpKVxuYGBgIn0= -->
-<pre class="r"><code>writeLines(readLines(&quot;New_stan.stan&quot;))</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxud3JpdGVMaW5lcyhyZWFkTGluZXMoXCJBbGdvcml0aG1fMS5zdGFuXCIpKVxuYGBgIn0= -->
+<pre class="r"><code>writeLines(readLines(&quot;Algorithm_1.stan&quot;))</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiZGF0YSB7XG4gIGludDxsb3dlcj0xPiBOO1xuICBpbnQ8bG93ZXI9MT4gRDtcbiAgaW50PGxvd2VyPTE+IE07XG4gIHJlYWwgeVtOXTtcbiAgdmVjdG9yW0RdIHhbTl07XG4gIHZlY3RvcltEXSB4X3ByZWRbTV07XG5cbiAgdmVjdG9yW0RdIGVsbDtcbiAgcmVhbDxsb3dlcj0wPiBzZjtcbiAgcmVhbDxsb3dlcj0wPiBzbjtcbn1cblxudHJhbnNmb3JtZWQgZGF0YXtcbiAgdmVjdG9yW0RdIHNbTl07XG4gIG1hdHJpeFtOLE5dIEs7XG4gIHZlY3RvcltEXSBzX3ByZWRbTl07XG4gIG1hdHJpeFtOLCBOXSBLbjtcbiAgbWF0cml4W04sIE5dIEw7XG4gIHJlYWwgYWxwaGFbTl07XG4gIG1hdHJpeFtOLCBNXSBLbW47XG4gIGZvciAobiBpbiAxOk4pIHtcbiAgICBzW25dID0geFtuXS4qIGVsbDtcbiAgfVxuICBmb3IgKG4gaW4gMTpOKSB7XG4gICAgc19wcmVkW25dID0geF9wcmVkW25dLiogZWxsO1xuICB9XG4gIEtuID0gICBjb3ZfZXhwX3F1YWQocywgc2YsIDEuMClcbiAgICAgICAgICAgICAgICAgICAgICsgZGlhZ19tYXRyaXgocmVwX3ZlY3RvcihzbiwgTikpO1xuICBMID0gY2hvbGVza3lfZGVjb21wb3NlKEtuKTtcbiAgYWxwaGEgPSBhbGdlYnJhX3NvbHZlcihzb2x2ZXIsIDEsIEwnLCBhbGdlYnJhX3NvbHZlcihzb2x2ZXIsIDEsIEwgLCB5KSlcbiAgS21uID0gICBjb3ZfZXhwX3F1YWQoc1tOXS4vZWxsLCBzX3ByZWRbTl0uL2VsbCwgc2YsIDEpO1xuICBtYXRyaXhbTSwgTV0gS20gPSAgIGNvdl9leHBfcXVhZChzX3ByZWRbTl0uL2VsbCwgc2YsIDEpO1xuICBtYXRyaXhbTiwgTV0gViA9IGFsZ2VicmFfc29sdmVyKHNvbHZlciwgMSwgTCwgS21uKTtcbiAgcmVhbCBtdVtOXSA9IEttbiphbHBoYTtcbiAgbWF0cml4W00sIE1dIFMgPSBLbSAtIFYnKlY7XG59XG5cbnBhcmFtZXRlcnMge1xufVxuXG5tb2RlbCB7XG59IFxuIn0= -->
+<!-- rnb-output-begin eyJkYXRhIjoiZGF0YSB7XG4gIGludDxsb3dlcj0xPiBOO1xuICBpbnQ8bG93ZXI9MT4gRDtcbiAgaW50PGxvd2VyPTE+IE07XG4gIHJlYWwgeVtOXTtcbiAgdmVjdG9yW0RdIHhbTl07XG4gIHZlY3RvcltEXSB4X3ByZWRbTV07XG5cbiAgdmVjdG9yW0RdIGVsbDtcbiAgcmVhbDxsb3dlcj0wPiBzZjtcbiAgcmVhbDxsb3dlcj0wPiBzbjtcbn1cblxudHJhbnNmb3JtZWQgZGF0YXtcbiAgdmVjdG9yW0RdIHNbTl07XG4gIG1hdHJpeFtOLE5dIEs7XG4gIHZlY3RvcltEXSBzX3ByZWRbTl07XG4gIG1hdHJpeFtOLCBOXSBLbjtcbiAgbWF0cml4W04sIE5dIEw7XG4gIHZlY3RvcltOXSBhbHBoYTtcbiAgbWF0cml4W04sIE1dIEttbjtcbiAgdmVjdG9yW05dIHlfdmVjO1xuICBtYXRyaXhbTSwgTV0gS207XG4gIG1hdHJpeFtOLCBNXSBWO1xuICB2ZWN0b3JbTl0gbXU7XG4gIG1hdHJpeFtNLCBNXSBTO1xuICBtYXRyaXhbTSwgTV0gTG07XG4gIGZvciAobiBpbiAxOk4pIHtcbiAgICBzW25dID0geFtuXS4qIGVsbDtcbiAgICB5X3ZlY1tuXSA9IHlbbl07XG4gIH1cbiAgZm9yIChuIGluIDE6TSkge1xuICAgIHNfcHJlZFtuXSA9IHhfcHJlZFtuXS4qIGVsbDtcbiAgfVxuICBLbiA9ICAgY292X2V4cF9xdWFkKHMsIHNmLCAxLjApXG4gICAgICAgICAgICAgICAgICAgICArIGRpYWdfbWF0cml4KHJlcF92ZWN0b3Ioc24sIE4pKTtcbiAgTCA9IGNob2xlc2t5X2RlY29tcG9zZShLbik7XG4gIGFscGhhID0gbWRpdmlkZV9yaWdodF90cmlfbG93KG1kaXZpZGVfbGVmdF90cmlfbG93KEwsIHlfdmVjKScsIEwpJztcbiAgS21uID0gICBjb3ZfZXhwX3F1YWQocywgc19wcmVkLCBzZiwgMS4wKTtcbiAgS20gPSAgIGNvdl9leHBfcXVhZChzX3ByZWQsIHNmLCAxLjApO1xuICBWID0gbWRpdmlkZV9sZWZ0X3RyaV9sb3coTCwgS21uKTtcbiAgbXUgPSBLbW4qYWxwaGE7XG4gIHByaW50KG11KTtcbiAgUyA9IEttIC0gVicqVjtcbiAgcHJpbnQoUyk7XG4gIExtID0gY2hvbGVza3lfZGVjb21wb3NlKFMpO1xufVxuXG5wYXJhbWV0ZXJzIHtcbiAgdmVjdG9yW01dIGV0YTtcbn1cblxubW9kZWwge1xuICBldGEgfiBzdGRfbm9ybWFsKCk7XG59IFxuXG5nZW5lcmF0ZWQgcXVhbnRpdGllc3tcbiAgdmVjdG9yW01dIHlfcHJlZDtcbiAgeV9wcmVkID0gTG0qZXRhICsgbXU7XG59XG4ifQ== -->
 <pre><code>data {
   int&lt;lower=1&gt; N;
   int&lt;lower=1&gt; D;
@@ -264,50 +266,159 @@ transformed data{
   vector[D] s_pred[N];
   matrix[N, N] Kn;
   matrix[N, N] L;
-  real alpha[N];
+  vector[N] alpha;
   matrix[N, M] Kmn;
+  vector[N] y_vec;
+  matrix[M, M] Km;
+  matrix[N, M] V;
+  vector[N] mu;
+  matrix[M, M] S;
+  matrix[M, M] Lm;
   for (n in 1:N) {
     s[n] = x[n].* ell;
+    y_vec[n] = y[n];
   }
-  for (n in 1:N) {
+  for (n in 1:M) {
     s_pred[n] = x_pred[n].* ell;
   }
   Kn =   cov_exp_quad(s, sf, 1.0)
                      + diag_matrix(rep_vector(sn, N));
   L = cholesky_decompose(Kn);
-  alpha = algebra_solver(solver, 1, L&#39;, algebra_solver(solver, 1, L , y))
-  Kmn =   cov_exp_quad(s[N]./ell, s_pred[N]./ell, sf, 1);
-  matrix[M, M] Km =   cov_exp_quad(s_pred[N]./ell, sf, 1);
-  matrix[N, M] V = algebra_solver(solver, 1, L, Kmn);
-  real mu[N] = Kmn*alpha;
-  matrix[M, M] S = Km - V&#39;*V;
+  alpha = mdivide_right_tri_low(mdivide_left_tri_low(L, y_vec)&#39;, L)&#39;;
+  Kmn =   cov_exp_quad(s, s_pred, sf, 1.0);
+  Km =   cov_exp_quad(s_pred, sf, 1.0);
+  V = mdivide_left_tri_low(L, Kmn);
+  mu = Kmn*alpha;
+  print(mu);
+  S = Km - V&#39;*V;
+  print(S);
+  Lm = cholesky_decompose(S);
 }
 
 parameters {
+  vector[M] eta;
 }
 
 model {
-} </code></pre>
+  eta ~ std_normal();
+} 
+
+generated quantities{
+  vector[M] y_pred;
+  y_pred = Lm*eta + mu;
+}</code></pre>
 <!-- rnb-output-end -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc2ltdV9maXQgPC0gc3RhbihmaWxlPSdOZXdfc3Rhbi5zdGFuJywgZGF0YT1zaW11X2RhdGEsXG4gICAgICAgICAgICAgICAgIHdhcm11cD0wLCBpdGVyPTQwMDAsIGNoYWlucz0xLCBzZWVkPTQ5NDgzOCxcbiAgICAgICAgICAgICAgICAgYWxnb3JpdGhtPVwiRml4ZWRfcGFyYW1cIiwgcmVmcmVzaD0xMDAwKVxuYGBgIn0= -->
-<pre class="r"><code>simu_fit &lt;- stan(file=&#39;New_stan.stan&#39;, data=simu_data,
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuR1BfZml0IDwtIHN0YW4oZmlsZT0nQWxnb3JpdGhtXzEuc3RhbicsIGRhdGE9c2ltdV9kYXRhLFxuICAgICAgICAgICAgICAgICB3YXJtdXA9MCwgaXRlcj00MDAwLCBjaGFpbnM9MSwgc2VlZD00OTQ4MzgsXG4gICAgICAgICAgICAgICAgIGFsZ29yaXRobT1cIkZpeGVkX3BhcmFtXCIsIHJlZnJlc2g9MTAwMClcbmBgYCJ9 -->
+<pre class="r"><code>GP_fit &lt;- stan(file=&#39;Algorithm_1.stan&#39;, data=simu_data,
                  warmup=0, iter=4000, chains=1, seed=494838,
                  algorithm=&quot;Fixed_param&quot;, refresh=1000)</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiU1lOVEFYIEVSUk9SLCBNRVNTQUdFKFMpIEZST00gUEFSU0VSOlxuIGVycm9yIGluICdtb2RlbGFiNmM0NDEzNjQ2NF9OZXdfc3RhbicgYXQgbGluZSAzMSwgY29sdW1uIDcxXG4gIC0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS1cbiAgICAyOTogICAgICAgICAgICAgICAgICAgICAgKyBkaWFnX21hdHJpeChyZXBfdmVjdG9yKHNuLCBOKSk7XG4gICAgMzA6ICAgTCA9IGNob2xlc2t5X2RlY29tcG9zZShLbik7XG4gICAgMzE6ICAgYWxwaGEgPSBhbGdlYnJhX3NvbHZlcihzb2x2ZXIsIDEsIEwnLCBhbGdlYnJhX3NvbHZlcihzb2x2ZXIsIDEsIEwgLCB5KSlcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIF5cbiAgICAzMjogICBLbW4gPSAgIGNvdl9leHBfcXVhZChzW05dLi9lbGwsIHNfcHJlZFtOXS4vZWxsLCBzZiwgMSk7XG4gIC0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS1cblxuUEFSU0VSIEVYUEVDVEVEOiBcIixcIlxuRXJyb3IgaW4gc3RhbmMoZmlsZSA9IGZpbGUsIG1vZGVsX2NvZGUgPSBtb2RlbF9jb2RlLCBtb2RlbF9uYW1lID0gbW9kZWxfbmFtZSwgIDogXG4gIGZhaWxlZCB0byBwYXJzZSBTdGFuIG1vZGVsICdOZXdfc3RhbicgZHVlIHRvIHRoZSBhYm92ZSBlcnJvci5cbiJ9 -->
-<pre><code>SYNTAX ERROR, MESSAGE(S) FROM PARSER:
- error in &#39;modelab6c44136464_New_stan&#39; at line 31, column 71
-  -------------------------------------------------
-    29:                      + diag_matrix(rep_vector(sn, N));
-    30:   L = cholesky_decompose(Kn);
-    31:   alpha = algebra_solver(solver, 1, L&#39;, algebra_solver(solver, 1, L , y))
-                                                                              ^
-    32:   Kmn =   cov_exp_quad(s[N]./ell, s_pred[N]./ell, sf, 1);
-  -------------------------------------------------
+<!-- rnb-output-begin eyJkYXRhIjoiV2FybmluZyBpbiBzeXN0ZW0ocGFzdGUoQ1hYLCBBUkdTKSwgaWdub3JlLnN0ZG91dCA9IFRSVUUsIGlnbm9yZS5zdGRlcnIgPSBUUlVFKSA6XG4gICctRScgbm90IGZvdW5kXG5FcnJvciBpbiBtb2QkZml0X3B0cigpIDogXG4gIEV4Y2VwdGlvbjogZ3BfZXhwX3F1YWRfY292OiB4MlsxXSBpcyBuYW4sIGJ1dCBtdXN0IG5vdCBiZSBuYW4hICAoaW4gJ21vZGVsNzkwNDU5ZjY2NGRhX0FsZ29yaXRobV8xJyBhdCBsaW5lIDM5KVxuXG5mYWlsZWQgdG8gY3JlYXRlIHRoZSBzYW1wbGVyOyBzYW1wbGluZyBub3QgZG9uZVxuIn0= -->
+<pre><code>Warning in system(paste(CXX, ARGS), ignore.stdout = TRUE, ignore.stderr = TRUE) :
+  &#39;-E&#39; not found
+Error in mod$fit_ptr() : 
+  Exception: gp_exp_quad_cov: x2[1] is nan, but must not be nan!  (in &#39;model790459f664da_Algorithm_1&#39; at line 39)
 
-PARSER EXPECTED: &quot;,&quot;
-Error in stanc(file = file, model_code = model_code, model_name = model_name,  : 
-  failed to parse Stan model &#39;New_stan&#39; due to the above error.</code></pre>
+failed to create the sampler; sampling not done</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc2FtcGxlID0gZXh0cmFjdChHUF9maXQsIHBhcnMgPSBjKCd5X3ByZWQnLCAnZXRhJykpXG4jcHJpbnQoc2FtcGxlJHlfcHJlZFszMjE0LF0pXG5wcmludChzYW1wbGUkeV9wcmVkWzE5LF0pXG5gYGAifQ== -->
+<pre class="r"><code>sample = extract(GP_fit, pars = c(&#39;y_pred&#39;, &#39;eta&#39;))
+#print(sample$y_pred[3214,])
+print(sample$y_pred[19,])</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiIFsxXSAtNC41MjQ2MjZlKzAyICAxLjYxMDExNmUrMDMgIDEuMzY1MjczZS0wMSAtMS4yODEwMTNlKzAyXG4gWzVdICA1LjMxODk4NGUrMDIgIDIuMjYyMzI2ZSswMyAgMy40NjM1NzNlKzA0IC00LjUyMTI0MmUrMDJcbiBbOV0gIDEuNjQ5MzQxZSswMiAgMS45OTc1MjVlKzAyICA5LjY0MDA0MGUrMDIgIDIuNDU4NTIxZSswMlxuWzEzXSAgMy4zMDI0MjVlKzAxIC0zLjAxMjA4MGUrMDEgLTguOTk4Mjk3ZSswMyAtMS42NTM3NTZlLTAxXG5bMTddIC0xLjI1Mjc3NmUrMDIgLTMuOTE3Mjc4ZSswMSAtMi44NDY1NDZlKzAyICAxLjU0MjIwNWUrMDJcblsyMV0gLTUuOTg4MTI5ZSswMSAtMy4xMzMxNjRlKzAyIC0xLjE3OTQ4MGUtMDEgLTQuMTk4NTUxZSswMlxuWzI1XSAtNS40NTE3NjhlKzAzIC0zLjQyNzU4M2UrMDMgIDUuNzMzODgwZSswMSAtMy4xMDczOTRlKzAyXG5bMjldIC0yLjA4ODA4OWUrMDIgLTUuNzE4NzMxZSswMyAgMS41NzI0NjJlKzAzICAxLjUyOTQ5M2UrMDNcblszM10gIDEuNTg4NDc2ZSswNCAtMS4wMzUxMDdlKzA0IC0zLjgwNDYyMGUrMDIgIDIuNTUwODkzZSswM1xuWzM3XSAgNi41NDI0MTdlKzAyICA3Ljc4NzkzNGUrMDIgLTguNjQzMDY1ZSswMyAgMS41MjQxNzRlKzAzXG5bNDFdICAxLjE1NzczMGUrMDQgLTEuNjU4MDEwZSswNCAtMi43NjczMjJlKzAzICAyLjk1NzE3OGUrMDRcbls0NV0gIDkuNDE0ODg4ZSswMiAgMi40MjcyNzhlKzAzICAxLjUwMjI3N2UrMDMgIDcuNTI3MjYxZSswMlxuWzQ5XSAgNS4wMDc1MDVlKzAxICAxLjA1NDQwOGUrMDRcbiJ9 -->
+<pre><code> [1] -4.524626e+02  1.610116e+03  1.365273e-01 -1.281013e+02
+ [5]  5.318984e+02  2.262326e+03  3.463573e+04 -4.521242e+02
+ [9]  1.649341e+02  1.997525e+02  9.640040e+02  2.458521e+02
+[13]  3.302425e+01 -3.012080e+01 -8.998297e+03 -1.653756e-01
+[17] -1.252776e+02 -3.917278e+01 -2.846546e+02  1.542205e+02
+[21] -5.988129e+01 -3.133164e+02 -1.179480e-01 -4.198551e+02
+[25] -5.451768e+03 -3.427583e+03  5.733880e+01 -3.107394e+02
+[29] -2.088089e+02 -5.718731e+03  1.572462e+03  1.529493e+03
+[33]  1.588476e+04 -1.035107e+04 -3.804620e+02  2.550893e+03
+[37]  6.542417e+02  7.787934e+02 -8.643065e+03  1.524174e+03
+[41]  1.157730e+04 -1.658010e+04 -2.767322e+03  2.957178e+04
+[45]  9.414888e+02  2.427278e+03  1.502277e+03  7.527261e+02
+[49]  5.007505e+01  1.054408e+04</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucHJpbnQoc2FtcGxlJGV0YVsxOSxdKVxuYGBgIn0= -->
+<pre class="r"><code>print(sample$eta[19,])</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiIFsxXSAtMS44MjEzMTIxOCAtMS42MTMwMzQyMyAgMC42NTcxMjcyNCAtMS41MTE3MzgxOSAgMC4yMDA0NzAyMVxuIFs2XSAtMS4zMTA2MTQzMyAtMC45Mjc2Nzk0NSAtMC42NTkyNTEwOCAtMS45NDQ4MTQ4NiAtMS43ODM4NzkyM1xuWzExXSAtMS44NzE3NzU5NyAgMC4zNjI4ODE3NCAgMS4yOTg3NDA4MSAtMC4xMDE0NTczMiAgMC43MTQxNTU2NVxuWzE2XSAtMC4zOTkwNDEyNyAtMS44NTc2NzM1NSAtMS41NTQzOTY4OSAtMS4xNDIzNzMwOCAtMC44OTY2Njg2MFxuWzIxXSAgMC40NjU4MDgwMyAtMC44NDYxNzUwNSAtMC42ODgxMTA1MyAgMC41NzU0NzY4MSAgMC4yMTUwNjEyMlxuWzI2XSAtMC4wNjc4MTM3MiAgMS4yNDc1MDY2MSAtMS4yMjI4NDY5MCAtMS4zMTg4NTc5MSAtMS42NzIwMjU5M1xuWzMxXSAgMS40MDA2NjI2MCAtMS4xMzEyMTQ5NiAgMS41NDM5MDMzOCAtMC40ODYzMTI4MSAtMC4yOTI2Njk1OFxuWzM2XSAtMS42OTU4MzMxMCAgMS4xOTY2Mzg2NiAgMS40NTQxNDY0MSAtMS44MjU2MTQyMSAtMS45NzgwOTc0NFxuWzQxXSAtMC45OTk5NjA0MyAgMC4yNjYzMTIzMiAgMC40NjE0NDk3MCAtMC4wMTQ3Mjc2MCAgMS4xODIyMTEyMVxuWzQ2XSAtMC45OTY4NDQ1MyAgMC4wNTQzOTk4MCAgMS4zMzQ5NzEwNiAtMC42ODg0MDQzMCAgMC40NDI5NTM0MVxuIn0= -->
+<pre><code> [1] -1.82131218 -1.61303423  0.65712724 -1.51173819  0.20047021
+ [6] -1.31061433 -0.92767945 -0.65925108 -1.94481486 -1.78387923
+[11] -1.87177597  0.36288174  1.29874081 -0.10145732  0.71415565
+[16] -0.39904127 -1.85767355 -1.55439689 -1.14237308 -0.89666860
+[21]  0.46580803 -0.84617505 -0.68811053  0.57547681  0.21506122
+[26] -0.06781372  1.24750661 -1.22284690 -1.31885791 -1.67202593
+[31]  1.40066260 -1.13121496  1.54390338 -0.48631281 -0.29266958
+[36] -1.69583310  1.19663866  1.45414641 -1.82561421 -1.97809744
+[41] -0.99996043  0.26631232  0.46144970 -0.01472760  1.18221121
+[46] -0.99684453  0.05439980  1.33497106 -0.68840430  0.44295341</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucHJpbnQoeSlcbmBgYCJ9 -->
+<pre class="r"><code>print(y)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiIFsxXSAgLTkuMzY5NjYyICAgOC4wODM0MDQgLTI2LjE4NjQ1MCAtMTAuNzQwMzcwICAgMS4xMTI4MDdcbiBbNl0gIDIxLjAyNTQ5OSAgLTIuODE5NDY4ICAtOC4zMDY2MjcgICA1LjQyMDUzMiAgMjMuODI1MDEwXG5bMTFdICAxOC43Njk1MDggICA5LjA2Mzg1OCAgNDEuODU2OTQzICAzMC40OTQ5MDQgIDI0LjczNTk3MlxuWzE2XSAtMjQuMjU0NTM0ICAzMS41OTg2NjAgLTExLjY4MDEwOSAgIDkuOTAyOTE0ICAyMi4xOTY3MTVcblsyMV0gIDMyLjMxMDEwNiAtMTAuNDA1ODI4IC0yNS40OTYwNzkgIC03Ljg0Mjg4NSAgMjguMzU5Nzc0XG5bMjZdICAyNC4xNzg0NTEgIDE3Ljk4MTY2NCAgLTkuMjYxMTc1IC0xMS4yMDkwNDIgIDEzLjE5ODc3NFxuWzMxXSAgIDcuMjk3MjkzICAgOS4yNDcyNzQgIC0xLjI5Mjg2NiAgIDQuMzA0ODQ2ICAgOS40ODE0NDJcblszNl0gIDE5Ljg5MTE3MCAgIDcuMDYwNzQzICAgNi42NTM1NzQgIDEwLjY0MTU1OCAgIDguMjUyNDE5XG5bNDFdICAtNC4zOTk2MDEgIDExLjI0MjAyMiAgMzUuMjY4OTY1ICAtMy44Mjc3MzEgICA5LjYzOTc2M1xuWzQ2XSAgMjAuNjY4MzA3ICAgOC4wMTYyMzIgIC01LjEzODg0MSAgMTcuMzQ2MTk4ICAtMy42MTAxMTRcbiJ9 -->
+<pre><code> [1]  -9.369662   8.083404 -26.186450 -10.740370   1.112807
+ [6]  21.025499  -2.819468  -8.306627   5.420532  23.825010
+[11]  18.769508   9.063858  41.856943  30.494904  24.735972
+[16] -24.254534  31.598660 -11.680109   9.902914  22.196715
+[21]  32.310106 -10.405828 -25.496079  -7.842885  28.359774
+[26]  24.178451  17.981664  -9.261175 -11.209042  13.198774
+[31]   7.297293   9.247274  -1.292866   4.304846   9.481442
+[36]  19.891170   7.060743   6.653574  10.641558   8.252419
+[41]  -4.399601  11.242022  35.268965  -3.827731   9.639763
+[46]  20.668307   8.016232  -5.138841  17.346198  -3.610114</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucHJpbnQoaGVhZChkYXRhX3ByZWQpKVxuYGBgIn0= -->
+<pre class="r"><code>print(head(data_pred))</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbImRhdGEuZnJhbWUiXSwibnJvdyI6NiwibmNvbCI6Mywic3VtbWFyeSI6eyJEZXNjcmlwdGlvbiI6WyJkZiBbNiB4IDNdIl19fSwicmRmIjoiSDRzSUFBQUFBQUFBQmd0eWlURG1pdUJpWUdCZ1ptQmhCSktzUUNZRG0zT0FvWkdwRVFNREN4T1F4OGpBd3NBSm9pdUE4c0pncFF3TWZDQmwrNS9jL2VZeTgxblNBYkhyLzVad1NONTFFQzArSjNmVnB1a0E3MGRSNFM4V2x3K0lhZDZaUEkzNSt3SEpsSXlYclIwcllQb2NtRTQwNWQxc3l6akF1djZ2aDREeExnZUZuYy81cytZNTduOStKTVQvd21PZkF5ekJPOVYxMk44ZDREcHg4VEszWUFCY244QmtMWjQxRzVnT3FBbWNPblRqODB3SE00TVNnNTF0Znc2SU5GdWF0Nys3ZGtDVmUvb3EzVXY3RDJnK3p0SVdsVHlKNWdIV3ZNVGMxR0lnUXdEaVg3QWdjNFZoTVp4cGhHQWFGNlBwNWl6S0w5ZURtY0FMeEV3TkRHREFobTVOY2s1aU1jd2FtQ0JYU21KSm9sNWFFVkEva1BjUFRRdDdma0ZKWm40ZVVCTVRLSUJaMFRRekZxRUo4SmZtZ1Z5U29wdWNVWnFYcldzR3NnQXNEY0c4VUpvTmljME1zWkxwUDlRb1ZxaFJiS2w1NlpsNXFUQzM1eVFtcGVaQU9YeEFINE05ckZkUWxKbFhBdk1KVUxSWXJ5Uy9KQkdtamlzNVB3Y21Bdllid3o4QTR3NVdSbGdDQUFBPSJ9 -->
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["x1s"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["x2s"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["x3s"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"-0.652095","2":"2.347905","3":"4.143715","_rn_":"1"},{"1":"-5.710932","2":"-2.710932","3":"-11.032797","_rn_":"2"},{"1":"5.363091","2":"8.363091","3":"22.189273","_rn_":"3"},{"1":"-3.742716","2":"-0.742716","3":"-5.128148","_rn_":"4"},{"1":"-5.540880","2":"-2.540880","3":"-10.522641","_rn_":"5"},{"1":"-6.348056","2":"-3.348056","3":"-12.944169","_rn_":"6"}],"options":{"columns":{"min":{},"max":[10],"total":[3]},"rows":{"min":[10],"max":[10],"total":[6]},"pages":{}}}
+  </script>
+</div>
+<!-- rnb-frame-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucHJpbnQoaGVhZChzYW1wbGUkeV9wcmVkWzIzLF0pKVxuYGBgIn0= -->
+<pre class="r"><code>print(head(sample$y_pred[23,]))</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIC00NTIuNDYyNjI2NiAxNjEwLjExNjMzNDQgICAgMC4xMzY1MjczIC0xMjguMTAxMzI1OVxuWzVdICA1MzEuODk4NDQ2NSAyMjYyLjMyNTUzMDdcbiJ9 -->
+<pre><code>[1] -452.4626266 1610.1163344    0.1365273 -128.1013259
+[5]  531.8984465 2262.3255307</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucHJpbnQoaGVhZCh5cykpXG5gYGAifQ== -->
+<pre class="r"><code>print(head(ys))</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdICAgMy45NTgzOTEgLTE1LjAxMDk2OSAgMjYuNzY1MjUxICAtNy43Mzg0MDUgLTE0LjY1MjkzOVxuWzZdIC0xOC41NzcxMTFcbiJ9 -->
+<pre><code>[1]   3.958391 -15.010969  26.765251  -7.738405 -14.652939
+[6] -18.577111</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucHJpbnQoaGVhZChkYXRhKSlcbmBgYCJ9 -->
+<pre class="r"><code>print(head(data))</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbImRhdGEuZnJhbWUiXSwibnJvdyI6NiwibmNvbCI6Mywic3VtbWFyeSI6eyJEZXNjcmlwdGlvbiI6WyJkZiBbNiB4IDNdIl19fSwicmRmIjoiSDRzSUFBQUFBQUFBQmd0eWlURG1pdUJpWUdCZ1ptQmhCSktzUUNZRG0zT0FvWkdwRVFNREN4T1F4OGpBd3NBSm9pdUE4c0pncFF3TWZDQmxCL2htM3BwMk9aM2IvcEgzQTlVelU2TVBLQnkwTnMzOXRPT0FZR0x2K1pCVy9mM2ZiYWVZV2g3dmNCQVFPQkV2L2ZReVROLytWK2xaMGI1emRCeDRKdjNnTEZZTlB5RGFWSloxKzJuQi9xOXQ1clpCSW52c2Z4ektQblhNb3NKQkJsWGZBZEZqZlBQTjF1bzR5TzNncWxnNFZmQ0FzWUw3TkZtOXlnTXlsWC9PRnFwTnNQOTFOOEZxNDF3YkJ5T3QwRFRkQXhKb0htRE5TOHhOTFFZeUJDRCtCUXN5VlJqQ1dVWndsakdhVnM2aS9ISTltSFpla0pJR0JqQmdRN2NqT1NleEdHWUhUSkFySmJFa1VTK3RDS2dmeVB1SHBvVTl2NkFrTXo4UHFJa0pGTHFzYUpvWmk5QUUrRXZ6UUM1SjBVM09LTTNMMWpVRFdRQ1dobUJlS00yR3hHYUdXTW4wSDJvVUs5UW90dFM4OU15OFZKamJjeEtUVW5PZ0hENmdqOEVlMWlzb3lzd3JnZmtFS0Zxc1Y1SmZrZ2hUeDVXY253TVRBZnVONFI4QU9pNCt0VlVDQUFBPSJ9 -->
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["x1"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["x2"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["x3"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"-3.8251240","2":"-0.825124","3":"-5.443415","_rn_":"1"},{"1":"0.5717622","2":"3.571762","3":"7.679727","_rn_":"2"},{"1":"-8.3774049","2":"-5.377405","3":"-19.126092","_rn_":"3"},{"1":"-4.3452675","2":"-1.345268","3":"-7.119128","_rn_":"4"},{"1":"-1.4525339","2":"1.547466","3":"1.679047","_rn_":"5"},{"1":"4.0163894","2":"7.016389","3":"18.165366","_rn_":"6"}],"options":{"columns":{"min":{},"max":[10],"total":[3]},"rows":{"min":[10],"max":[10],"total":[6]},"pages":{}}}
+  </script>
+</div>
+<!-- rnb-frame-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucHJpbnQoaGVhZCh5KSlcbmBgYCJ9 -->
+<pre class="r"><code>print(head(y))</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdICAtOS4zNjk2NjIgICA4LjA4MzQwNCAtMjYuMTg2NDUwIC0xMC43NDAzNzAgICAxLjExMjgwN1xuWzZdICAyMS4wMjU0OTlcbiJ9 -->
+<pre><code>[1]  -9.369662   8.083404 -26.186450 -10.740370   1.112807
+[6]  21.025499</code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
@@ -363,7 +474,7 @@ model {
 <pre><code>Warning in system(paste(CXX, ARGS), ignore.stdout = TRUE, ignore.stderr = TRUE) :
   &#39;-E&#39; not found</code></pre>
 <!-- rnb-output-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiXG5TQU1QTElORyBGT1IgTU9ERUwgJ3NhbmRib3gnIE5PVyAoQ0hBSU4gMSkuXG5DaGFpbiAxOiBJdGVyYXRpb246ICAgIDEgLyA0MDAwIFsgIDAlXSAgKFNhbXBsaW5nKVxuQ2hhaW4gMTogSXRlcmF0aW9uOiAxMDAwIC8gNDAwMCBbIDI1JV0gIChTYW1wbGluZylcbkNoYWluIDE6IEl0ZXJhdGlvbjogMjAwMCAvIDQwMDAgWyA1MCVdICAoU2FtcGxpbmcpXG5DaGFpbiAxOiBJdGVyYXRpb246IDMwMDAgLyA0MDAwIFsgNzUlXSAgKFNhbXBsaW5nKVxuQ2hhaW4gMTogSXRlcmF0aW9uOiA0MDAwIC8gNDAwMCBbMTAwJV0gIChTYW1wbGluZylcbkNoYWluIDE6IFxuQ2hhaW4gMTogIEVsYXBzZWQgVGltZTogMCBzZWNvbmRzIChXYXJtLXVwKVxuQ2hhaW4gMTogICAgICAgICAgICAgICAgMC4xMDcgc2Vjb25kcyAoU2FtcGxpbmcpXG5DaGFpbiAxOiAgICAgICAgICAgICAgICAwLjEwNyBzZWNvbmRzIChUb3RhbClcbkNoYWluIDE6IFxuIn0= -->
+<!-- rnb-output-begin eyJkYXRhIjoiXG5TQU1QTElORyBGT1IgTU9ERUwgJ3NhbmRib3gnIE5PVyAoQ0hBSU4gMSkuXG5DaGFpbiAxOiBJdGVyYXRpb246ICAgIDEgLyA0MDAwIFsgIDAlXSAgKFNhbXBsaW5nKVxuQ2hhaW4gMTogSXRlcmF0aW9uOiAxMDAwIC8gNDAwMCBbIDI1JV0gIChTYW1wbGluZylcbkNoYWluIDE6IEl0ZXJhdGlvbjogMjAwMCAvIDQwMDAgWyA1MCVdICAoU2FtcGxpbmcpXG5DaGFpbiAxOiBJdGVyYXRpb246IDMwMDAgLyA0MDAwIFsgNzUlXSAgKFNhbXBsaW5nKVxuQ2hhaW4gMTogSXRlcmF0aW9uOiA0MDAwIC8gNDAwMCBbMTAwJV0gIChTYW1wbGluZylcbkNoYWluIDE6IFxuQ2hhaW4gMTogIEVsYXBzZWQgVGltZTogMCBzZWNvbmRzIChXYXJtLXVwKVxuQ2hhaW4gMTogICAgICAgICAgICAgICAgMC4xMzcgc2Vjb25kcyAoU2FtcGxpbmcpXG5DaGFpbiAxOiAgICAgICAgICAgICAgICAwLjEzNyBzZWNvbmRzIChUb3RhbClcbkNoYWluIDE6IFxuIn0= -->
 <pre><code>
 SAMPLING FOR MODEL &#39;sandbox&#39; NOW (CHAIN 1).
 Chain 1: Iteration:    1 / 4000 [  0%]  (Sampling)
@@ -373,13 +484,13 @@ Chain 1: Iteration: 3000 / 4000 [ 75%]  (Sampling)
 Chain 1: Iteration: 4000 / 4000 [100%]  (Sampling)
 Chain 1: 
 Chain 1:  Elapsed Time: 0 seconds (Warm-up)
-Chain 1:                0.107 seconds (Sampling)
-Chain 1:                0.107 seconds (Total)
+Chain 1:                0.137 seconds (Sampling)
+Chain 1:                0.137 seconds (Total)
 Chain 1: </code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 
-<div id="rmd-source-code">LS0tDQp0aXRsZTogIk5ldyBHUCINCm91dHB1dDogaHRtbF9ub3RlYm9vaw0KLS0tDQoNCg0KYGBge3J9DQpsaWJyYXJ5KHJzdGFuKQ0KbiA8LSA1DQp4MSA8LSBybm9ybShuLCBtZWFuID0gMCwgc2QgPSA1KQ0KeDIgPC0geDEgKyBybm9ybShuLCBtZWFuID0gMCwgc2QgPSAxKQ0KeDMgPC0gMip4Mit4MSsgcm5vcm0obiwgbWVhbiA9IDAsIHNkID0gLjEpDQp5PC0geDMrLjA4KngxK3Jub3JtKG4sIG1lYW4gPSAwLCBzZCA9IC41KQ0KZGF0YSA8LSBkYXRhLmZyYW1lKHgxLCB4MiwgeDMpDQp4MXMgPC0gcm5vcm0obiwgbWVhbiA9IDAsIHNkID0gNCkNCngycyA8LSBybm9ybShuLCBtZWFuID0gMCwgc2QgPSA0KQ0KeDNzIDwtIDIqeDIreDEgKyAuMg0KZGF0YV9wcmVkIDwtIGRhdGEuZnJhbWUoeDFzLCB4MnMsIHgzcykNCmBgYA0KDQoNCmBgYHtyfQ0Kc2ltdV9kYXRhIDwtIGxpc3QoTiA9IG4sRCA9ICAzLCBNID0gbiwgeCA9IGRhdGEseSA9IHksIHhfcHJlZCA9ZGF0YV9wcmVkLCBlbGw9IGMoMiwgMywgMSksICBzZj0xLCAgc249MWUtMTApDQpgYGANCg0KYGBge3J9DQp3cml0ZUxpbmVzKHJlYWRMaW5lcygiTmV3X3N0YW4uc3RhbiIpKQ0Kc2ltdV9maXQgPC0gc3RhbihmaWxlPSdOZXdfc3Rhbi5zdGFuJywgZGF0YT1zaW11X2RhdGEsDQogICAgICAgICAgICAgICAgIHdhcm11cD0wLCBpdGVyPTQwMDAsIGNoYWlucz0xLCBzZWVkPTQ5NDgzOCwNCiAgICAgICAgICAgICAgICAgYWxnb3JpdGhtPSJGaXhlZF9wYXJhbSIsIHJlZnJlc2g9MTAwMCkNCmBgYA0KDQoNCg0KYGBge3J9DQplbGwgPSBjKDEsIDIsIDEpDQpzYW5kYm94X2RhdGEgPC0gbGlzdChOID0gbiwgZWxsID0gZWxsLCBEPTMsIHggPSBkYXRhKQ0KI3N3ZWVwKGFzLm1hdHJpeChkYXRhKSwgMiwgZWxsLCAiLyIpDQpgYGANCg0KYGBge3J9DQp3cml0ZUxpbmVzKHJlYWRMaW5lcygic2FuZGJveC5zdGFuIikpDQpzaW11X2ZpdCA8LSBzdGFuKGZpbGU9J3NhbmRib3guc3RhbicsIGRhdGE9c2FuZGJveF9kYXRhLA0KICAgICAgICAgICAgICAgICB3YXJtdXA9MCwgaXRlcj00MDAwLCBjaGFpbnM9MSwgc2VlZD00OTQ4MzgsDQogICAgICAgICAgICAgICAgIGFsZ29yaXRobT0iRml4ZWRfcGFyYW0iLCByZWZyZXNoPTEwMDApDQpgYGA=</div>
+<div id="rmd-source-code">LS0tDQp0aXRsZTogIk5ldyBHUCINCm91dHB1dDogaHRtbF9ub3RlYm9vaw0KLS0tDQoNCg0KYGBge3J9DQpsaWJyYXJ5KHJzdGFuKQ0KbiA8LSA1MDANCm0gPC0gMTANCngxIDwtIHJub3JtKG4sIG1lYW4gPSAwLCBzZCA9IDUpDQp4MiA8LSB4MSArIDMNCngzIDwtIDIqeDIreDErIHJub3JtKG4sIG1lYW4gPSAwLCBzZCA9IC4xKQ0KeTwtIHgzKy44KngxK3Jub3JtKG4sIG1lYW4gPSAwLCBzZCA9IC41KQ0KZGF0YSA8LSBkYXRhLmZyYW1lKHgxLCB4MiwgeDMpDQp4MXMgPC0gcm5vcm0obSwgbWVhbiA9IDAsIHNkID0gNSkNCngycyA8LSB4MXMgKyAzDQp4M3MgPC0gMip4MnMreDFzICsgLjENCnlzIDwtIHgzcysuOCp4MXMrcm5vcm0obiwgbWVhbiA9IDAsIHNkID0gLjUpDQpkYXRhX3ByZWQgPC0gZGF0YS5mcmFtZSh4MXMsIHgycywgeDNzKQ0KYGBgDQoNCg0KYGBge3J9DQpzaW11X2RhdGEgPC0gbGlzdChOID0gbixEID0gIDMsIE0gPSBtLCB4ID0gZGF0YSx5ID0geSwgeF9wcmVkID1kYXRhX3ByZWQsIGVsbD0gYygyLCAuNSwgMSksICBzZj0xLCAgc249MWUtNSkNCmBgYA0KDQpgYGB7cn0NCndyaXRlTGluZXMocmVhZExpbmVzKCJBbGdvcml0aG1fMS5zdGFuIikpDQpHUF9maXQgPC0gc3RhbihmaWxlPSdBbGdvcml0aG1fMS5zdGFuJywgZGF0YT1zaW11X2RhdGEsDQogICAgICAgICAgICAgICAgIHdhcm11cD0wLCBpdGVyPTQwMDAsIGNoYWlucz0xLCBzZWVkPTQ5NDgzOCwNCiAgICAgICAgICAgICAgICAgYWxnb3JpdGhtPSJGaXhlZF9wYXJhbSIsIHJlZnJlc2g9MTAwMCkNCmBgYA0KDQpgYGB7cn0NCnNhbXBsZSA9IGV4dHJhY3QoR1BfZml0LCBwYXJzID0gYygneV9wcmVkJywgJ2V0YScpKQ0KI3ByaW50KHNhbXBsZSR5X3ByZWRbMzIxNCxdKQ0KcHJpbnQoc2FtcGxlJHlfcHJlZFsxOSxdKQ0KcHJpbnQoc2FtcGxlJGV0YVsxOSxdKQ0KcHJpbnQoeSkNCmBgYA0KDQpgYGB7cn0NCnByaW50KGhlYWQoZGF0YV9wcmVkKSkNCnByaW50KGhlYWQoc2FtcGxlJHlfcHJlZFsyMyxdKSkNCnByaW50KGhlYWQoeXMpKQ0KcHJpbnQoaGVhZChkYXRhKSkNCnByaW50KGhlYWQoeSkpDQpgYGANCg0KDQoNCmBgYHtyfQ0KZWxsID0gYygxLCAyLCAxKQ0Kc2FuZGJveF9kYXRhIDwtIGxpc3QoTiA9IG4sIGVsbCA9IGVsbCwgRD0zLCB4ID0gZGF0YSkNCiNzd2VlcChhcy5tYXRyaXgoZGF0YSksIDIsIGVsbCwgIi8iKQ0KYGBgDQoNCmBgYHtyfQ0Kd3JpdGVMaW5lcyhyZWFkTGluZXMoInNhbmRib3guc3RhbiIpKQ0Kc2ltdV9maXQgPC0gc3RhbihmaWxlPSdzYW5kYm94LnN0YW4nLCBkYXRhPXNhbmRib3hfZGF0YSwNCiAgICAgICAgICAgICAgICAgd2FybXVwPTAsIGl0ZXI9NDAwMCwgY2hhaW5zPTEsIHNlZWQ9NDk0ODM4LA0KICAgICAgICAgICAgICAgICBhbGdvcml0aG09IkZpeGVkX3BhcmFtIiwgcmVmcmVzaD0xMDAwKQ0KYGBg</div>
 
 
 
