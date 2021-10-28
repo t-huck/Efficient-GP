@@ -20,7 +20,7 @@ data_pred <- data.frame(x1s, x2s, x3s)
 
 
 ```{r}
-simu_data <- list(N = n,D =  3, M = n, x = data, xpred =data_pred, ell= c(2, 3, 1),  sf=1,  sn=1e-10)
+simu_data <- list(N = n,D =  3, M = n, x = data,y = y, x_pred =data_pred, ell= c(2, 3, 1),  sf=1,  sn=1e-10)
 ```
 
 ```{r}

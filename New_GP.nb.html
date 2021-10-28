@@ -234,19 +234,81 @@ data_pred &lt;- data.frame(x1s, x2s, x3s)</code></pre>
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc2ltdV9kYXRhIDwtIGxpc3QoTiA9IG4sRCA9ICAzLCBNID0gbiwgeCA9IGRhdGEsIHhwcmVkID1kYXRhX3ByZWQsIGVsbD0gYygyLCAzLCAxKSwgIHNmPTEsICBzbj0xZS0xMClcbmBgYCJ9 -->
-<pre class="r"><code>simu_data &lt;- list(N = n,D =  3, M = n, x = data, xpred =data_pred, ell= c(2, 3, 1),  sf=1,  sn=1e-10)</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc2ltdV9kYXRhIDwtIGxpc3QoTiA9IG4sRCA9ICAzLCBNID0gbiwgeCA9IGRhdGEseSA9IHksIHhfcHJlZCA9ZGF0YV9wcmVkLCBlbGw9IGMoMiwgMywgMSksICBzZj0xLCAgc249MWUtMTApXG5gYGAifQ== -->
+<pre class="r"><code>simu_data &lt;- list(N = n,D =  3, M = n, x = data,y = y, x_pred =data_pred, ell= c(2, 3, 1),  sf=1,  sn=1e-10)</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxud3JpdGVMaW5lcyhyZWFkTGluZXMoXCJOZXdfc3Rhbi5zdGFuXCIpKVxuc2ltdV9maXQgPC0gc3RhbihmaWxlPSdOZXdfc3Rhbi5zdGFuJywgZGF0YT1zaW11X2RhdGEsXG4gICAgICAgICAgICAgICAgIHdhcm11cD0wLCBpdGVyPTQwMDAsIGNoYWlucz0xLCBzZWVkPTQ5NDgzOCxcbiAgICAgICAgICAgICAgICAgYWxnb3JpdGhtPVwiRml4ZWRfcGFyYW1cIiwgcmVmcmVzaD0xMDAwKVxuYGBgIn0= -->
-<pre class="r"><code>writeLines(readLines(&quot;New_stan.stan&quot;))
-simu_fit &lt;- stan(file=&#39;New_stan.stan&#39;, data=simu_data,
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxud3JpdGVMaW5lcyhyZWFkTGluZXMoXCJOZXdfc3Rhbi5zdGFuXCIpKVxuYGBgIn0= -->
+<pre class="r"><code>writeLines(readLines(&quot;New_stan.stan&quot;))</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiZGF0YSB7XG4gIGludDxsb3dlcj0xPiBOO1xuICBpbnQ8bG93ZXI9MT4gRDtcbiAgaW50PGxvd2VyPTE+IE07XG4gIHJlYWwgeVtOXTtcbiAgdmVjdG9yW0RdIHhbTl07XG4gIHZlY3RvcltEXSB4X3ByZWRbTV07XG5cbiAgdmVjdG9yW0RdIGVsbDtcbiAgcmVhbDxsb3dlcj0wPiBzZjtcbiAgcmVhbDxsb3dlcj0wPiBzbjtcbn1cblxudHJhbnNmb3JtZWQgZGF0YXtcbiAgdmVjdG9yW0RdIHNbTl07XG4gIG1hdHJpeFtOLE5dIEs7XG4gIHZlY3RvcltEXSBzX3ByZWRbTl07XG4gIG1hdHJpeFtOLCBOXSBLbjtcbiAgbWF0cml4W04sIE5dIEw7XG4gIHJlYWwgYWxwaGFbTl07XG4gIG1hdHJpeFtOLCBNXSBLbW47XG4gIGZvciAobiBpbiAxOk4pIHtcbiAgICBzW25dID0geFtuXS4qIGVsbDtcbiAgfVxuICBmb3IgKG4gaW4gMTpOKSB7XG4gICAgc19wcmVkW25dID0geF9wcmVkW25dLiogZWxsO1xuICB9XG4gIEtuID0gICBjb3ZfZXhwX3F1YWQocywgc2YsIDEuMClcbiAgICAgICAgICAgICAgICAgICAgICsgZGlhZ19tYXRyaXgocmVwX3ZlY3RvcihzbiwgTikpO1xuICBMID0gY2hvbGVza3lfZGVjb21wb3NlKEtuKTtcbiAgYWxwaGEgPSBhbGdlYnJhX3NvbHZlcihzb2x2ZXIsIDEsIEwnLCBhbGdlYnJhX3NvbHZlcihzb2x2ZXIsIDEsIEwgLCB5KSlcbiAgS21uID0gICBjb3ZfZXhwX3F1YWQoc1tOXS4vZWxsLCBzX3ByZWRbTl0uL2VsbCwgc2YsIDEpO1xuICBtYXRyaXhbTSwgTV0gS20gPSAgIGNvdl9leHBfcXVhZChzX3ByZWRbTl0uL2VsbCwgc2YsIDEpO1xuICBtYXRyaXhbTiwgTV0gViA9IGFsZ2VicmFfc29sdmVyKHNvbHZlciwgMSwgTCwgS21uKTtcbiAgcmVhbCBtdVtOXSA9IEttbiphbHBoYTtcbiAgbWF0cml4W00sIE1dIFMgPSBLbSAtIFYnKlY7XG59XG5cbnBhcmFtZXRlcnMge1xufVxuXG5tb2RlbCB7XG59IFxuIn0= -->
+<pre><code>data {
+  int&lt;lower=1&gt; N;
+  int&lt;lower=1&gt; D;
+  int&lt;lower=1&gt; M;
+  real y[N];
+  vector[D] x[N];
+  vector[D] x_pred[M];
+
+  vector[D] ell;
+  real&lt;lower=0&gt; sf;
+  real&lt;lower=0&gt; sn;
+}
+
+transformed data{
+  vector[D] s[N];
+  matrix[N,N] K;
+  vector[D] s_pred[N];
+  matrix[N, N] Kn;
+  matrix[N, N] L;
+  real alpha[N];
+  matrix[N, M] Kmn;
+  for (n in 1:N) {
+    s[n] = x[n].* ell;
+  }
+  for (n in 1:N) {
+    s_pred[n] = x_pred[n].* ell;
+  }
+  Kn =   cov_exp_quad(s, sf, 1.0)
+                     + diag_matrix(rep_vector(sn, N));
+  L = cholesky_decompose(Kn);
+  alpha = algebra_solver(solver, 1, L&#39;, algebra_solver(solver, 1, L , y))
+  Kmn =   cov_exp_quad(s[N]./ell, s_pred[N]./ell, sf, 1);
+  matrix[M, M] Km =   cov_exp_quad(s_pred[N]./ell, sf, 1);
+  matrix[N, M] V = algebra_solver(solver, 1, L, Kmn);
+  real mu[N] = Kmn*alpha;
+  matrix[M, M] S = Km - V&#39;*V;
+}
+
+parameters {
+}
+
+model {
+} </code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc2ltdV9maXQgPC0gc3RhbihmaWxlPSdOZXdfc3Rhbi5zdGFuJywgZGF0YT1zaW11X2RhdGEsXG4gICAgICAgICAgICAgICAgIHdhcm11cD0wLCBpdGVyPTQwMDAsIGNoYWlucz0xLCBzZWVkPTQ5NDgzOCxcbiAgICAgICAgICAgICAgICAgYWxnb3JpdGhtPVwiRml4ZWRfcGFyYW1cIiwgcmVmcmVzaD0xMDAwKVxuYGBgIn0= -->
+<pre class="r"><code>simu_fit &lt;- stan(file=&#39;New_stan.stan&#39;, data=simu_data,
                  warmup=0, iter=4000, chains=1, seed=494838,
                  algorithm=&quot;Fixed_param&quot;, refresh=1000)</code></pre>
 <!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiU1lOVEFYIEVSUk9SLCBNRVNTQUdFKFMpIEZST00gUEFSU0VSOlxuIGVycm9yIGluICdtb2RlbGFiNmM0NDEzNjQ2NF9OZXdfc3RhbicgYXQgbGluZSAzMSwgY29sdW1uIDcxXG4gIC0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS1cbiAgICAyOTogICAgICAgICAgICAgICAgICAgICAgKyBkaWFnX21hdHJpeChyZXBfdmVjdG9yKHNuLCBOKSk7XG4gICAgMzA6ICAgTCA9IGNob2xlc2t5X2RlY29tcG9zZShLbik7XG4gICAgMzE6ICAgYWxwaGEgPSBhbGdlYnJhX3NvbHZlcihzb2x2ZXIsIDEsIEwnLCBhbGdlYnJhX3NvbHZlcihzb2x2ZXIsIDEsIEwgLCB5KSlcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIF5cbiAgICAzMjogICBLbW4gPSAgIGNvdl9leHBfcXVhZChzW05dLi9lbGwsIHNfcHJlZFtOXS4vZWxsLCBzZiwgMSk7XG4gIC0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS1cblxuUEFSU0VSIEVYUEVDVEVEOiBcIixcIlxuRXJyb3IgaW4gc3RhbmMoZmlsZSA9IGZpbGUsIG1vZGVsX2NvZGUgPSBtb2RlbF9jb2RlLCBtb2RlbF9uYW1lID0gbW9kZWxfbmFtZSwgIDogXG4gIGZhaWxlZCB0byBwYXJzZSBTdGFuIG1vZGVsICdOZXdfc3RhbicgZHVlIHRvIHRoZSBhYm92ZSBlcnJvci5cbiJ9 -->
+<pre><code>SYNTAX ERROR, MESSAGE(S) FROM PARSER:
+ error in &#39;modelab6c44136464_New_stan&#39; at line 31, column 71
+  -------------------------------------------------
+    29:                      + diag_matrix(rep_vector(sn, N));
+    30:   L = cholesky_decompose(Kn);
+    31:   alpha = algebra_solver(solver, 1, L&#39;, algebra_solver(solver, 1, L , y))
+                                                                              ^
+    32:   Kmn =   cov_exp_quad(s[N]./ell, s_pred[N]./ell, sf, 1);
+  -------------------------------------------------
+
+PARSER EXPECTED: &quot;,&quot;
+Error in stanc(file = file, model_code = model_code, model_name = model_name,  : 
+  failed to parse Stan model &#39;New_stan&#39; due to the above error.</code></pre>
+<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
@@ -263,7 +325,7 @@ sandbox_data &lt;- list(N = n, ell = ell, D=3, x = data)
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxud3JpdGVMaW5lcyhyZWFkTGluZXMoXCJzYW5kYm94LnN0YW5cIikpXG5gYGAifQ== -->
 <pre class="r"><code>writeLines(readLines(&quot;sandbox.stan&quot;))</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiZGF0YSB7XG4gIGludDxsb3dlcj0wPiBOO1xuICBpbnQ8bG93ZXI9MD4gRDtcbiAgdmVjdG9yW0RdIHhbTl07XG4gIHZlY3RvcltEXSBlbGw7XG59XG5cblxudHJhbnNmb3JtZWQgZGF0YXtcbiAgdmVjdG9yW0RdIHNbTl07XG4gIG1hdHJpeFtOLE5dIEs7XG4gIGZvciAobiBpbiAxOk4pIHtcbiAgICBzW25dIC4qPSBlbGw7XG4gIH1cbiAgXG4gIEsgPSBjb3ZfZXhwX3F1YWQocywgMi4wLCAxLjApO1xufVxuXG5wYXJhbWV0ZXJzIHtcbiAgdmVjdG9yW05dIG11O1xuICB2ZWN0b3JbTl0geTtcbn1cblxuXG5tb2RlbCB7XG4gIHkgfiBtdWx0aV9ub3JtYWwobXUsIEspO1xufVxuIn0= -->
+<!-- rnb-output-begin eyJkYXRhIjoiZGF0YSB7XG4gIGludDxsb3dlcj0wPiBOO1xuICBpbnQ8bG93ZXI9MD4gRDtcbiAgdmVjdG9yW0RdIHhbTl07XG4gIHZlY3RvcltEXSBlbGw7XG59XG5cblxudHJhbnNmb3JtZWQgZGF0YXtcbiAgdmVjdG9yW0RdIHNbTl07XG4gIG1hdHJpeFtOLE5dIEs7XG4gIGZvciAobiBpbiAxOk4pIHtcbiAgICBzW25dID0geFtuXS4qIGVsbDtcbiAgfVxuICBcbiAgSyA9IGNvdl9leHBfcXVhZChzLCAyLjAsIDEuMCk7XG59XG5cbnBhcmFtZXRlcnMge1xuICB2ZWN0b3JbTl0gbXU7XG4gIHZlY3RvcltOXSB5O1xufVxuXG5cbm1vZGVsIHtcbiAgeSB+IG11bHRpX25vcm1hbChtdSwgSyk7XG59XG4ifQ== -->
 <pre><code>data {
   int&lt;lower=0&gt; N;
   int&lt;lower=0&gt; D;
@@ -276,7 +338,7 @@ transformed data{
   vector[D] s[N];
   matrix[N,N] K;
   for (n in 1:N) {
-    s[n] .*= ell;
+    s[n] = x[n].* ell;
   }
   
   K = cov_exp_quad(s, 2.0, 1.0);
@@ -297,17 +359,27 @@ model {
                  warmup=0, iter=4000, chains=1, seed=494838,
                  algorithm=&quot;Fixed_param&quot;, refresh=1000)</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiV2FybmluZyBpbiBzeXN0ZW0ocGFzdGUoQ1hYLCBBUkdTKSwgaWdub3JlLnN0ZG91dCA9IFRSVUUsIGlnbm9yZS5zdGRlcnIgPSBUUlVFKSA6XG4gICctRScgbm90IGZvdW5kXG5FcnJvciBpbiBtb2QkZml0X3B0cigpIDogXG4gIEV4Y2VwdGlvbjogZ3BfZXhwX3F1YWRfY292OiB4WzFdIGlzIG5hbiwgYnV0IG11c3Qgbm90IGJlIG5hbiEgIChpbiAnbW9kZWxhYjZjMWE5OTJjNjNfc2FuZGJveCcgYXQgbGluZSAxNilcblxuZmFpbGVkIHRvIGNyZWF0ZSB0aGUgc2FtcGxlcjsgc2FtcGxpbmcgbm90IGRvbmVcbiJ9 -->
+<!-- rnb-output-begin eyJkYXRhIjoiV2FybmluZyBpbiBzeXN0ZW0ocGFzdGUoQ1hYLCBBUkdTKSwgaWdub3JlLnN0ZG91dCA9IFRSVUUsIGlnbm9yZS5zdGRlcnIgPSBUUlVFKSA6XG4gICctRScgbm90IGZvdW5kXG4ifQ== -->
 <pre><code>Warning in system(paste(CXX, ARGS), ignore.stdout = TRUE, ignore.stderr = TRUE) :
-  &#39;-E&#39; not found
-Error in mod$fit_ptr() : 
-  Exception: gp_exp_quad_cov: x[1] is nan, but must not be nan!  (in &#39;modelab6c1a992c63_sandbox&#39; at line 16)
-
-failed to create the sampler; sampling not done</code></pre>
+  &#39;-E&#39; not found</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiXG5TQU1QTElORyBGT1IgTU9ERUwgJ3NhbmRib3gnIE5PVyAoQ0hBSU4gMSkuXG5DaGFpbiAxOiBJdGVyYXRpb246ICAgIDEgLyA0MDAwIFsgIDAlXSAgKFNhbXBsaW5nKVxuQ2hhaW4gMTogSXRlcmF0aW9uOiAxMDAwIC8gNDAwMCBbIDI1JV0gIChTYW1wbGluZylcbkNoYWluIDE6IEl0ZXJhdGlvbjogMjAwMCAvIDQwMDAgWyA1MCVdICAoU2FtcGxpbmcpXG5DaGFpbiAxOiBJdGVyYXRpb246IDMwMDAgLyA0MDAwIFsgNzUlXSAgKFNhbXBsaW5nKVxuQ2hhaW4gMTogSXRlcmF0aW9uOiA0MDAwIC8gNDAwMCBbMTAwJV0gIChTYW1wbGluZylcbkNoYWluIDE6IFxuQ2hhaW4gMTogIEVsYXBzZWQgVGltZTogMCBzZWNvbmRzIChXYXJtLXVwKVxuQ2hhaW4gMTogICAgICAgICAgICAgICAgMC4xMDcgc2Vjb25kcyAoU2FtcGxpbmcpXG5DaGFpbiAxOiAgICAgICAgICAgICAgICAwLjEwNyBzZWNvbmRzIChUb3RhbClcbkNoYWluIDE6IFxuIn0= -->
+<pre><code>
+SAMPLING FOR MODEL &#39;sandbox&#39; NOW (CHAIN 1).
+Chain 1: Iteration:    1 / 4000 [  0%]  (Sampling)
+Chain 1: Iteration: 1000 / 4000 [ 25%]  (Sampling)
+Chain 1: Iteration: 2000 / 4000 [ 50%]  (Sampling)
+Chain 1: Iteration: 3000 / 4000 [ 75%]  (Sampling)
+Chain 1: Iteration: 4000 / 4000 [100%]  (Sampling)
+Chain 1: 
+Chain 1:  Elapsed Time: 0 seconds (Warm-up)
+Chain 1:                0.107 seconds (Sampling)
+Chain 1:                0.107 seconds (Total)
+Chain 1: </code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 
-<div id="rmd-source-code">LS0tDQp0aXRsZTogIk5ldyBHUCINCm91dHB1dDogaHRtbF9ub3RlYm9vaw0KLS0tDQoNCg0KYGBge3J9DQpsaWJyYXJ5KHJzdGFuKQ0KbiA8LSA1DQp4MSA8LSBybm9ybShuLCBtZWFuID0gMCwgc2QgPSA1KQ0KeDIgPC0geDEgKyBybm9ybShuLCBtZWFuID0gMCwgc2QgPSAxKQ0KeDMgPC0gMip4Mit4MSsgcm5vcm0obiwgbWVhbiA9IDAsIHNkID0gLjEpDQp5PC0geDMrLjA4KngxK3Jub3JtKG4sIG1lYW4gPSAwLCBzZCA9IC41KQ0KZGF0YSA8LSBkYXRhLmZyYW1lKHgxLCB4MiwgeDMpDQp4MXMgPC0gcm5vcm0obiwgbWVhbiA9IDAsIHNkID0gNCkNCngycyA8LSBybm9ybShuLCBtZWFuID0gMCwgc2QgPSA0KQ0KeDNzIDwtIDIqeDIreDEgKyAuMg0KZGF0YV9wcmVkIDwtIGRhdGEuZnJhbWUoeDFzLCB4MnMsIHgzcykNCmBgYA0KDQoNCmBgYHtyfQ0Kc2ltdV9kYXRhIDwtIGxpc3QoTiA9IG4sRCA9ICAzLCBNID0gbiwgeCA9IGRhdGEsIHhwcmVkID1kYXRhX3ByZWQsIGVsbD0gYygyLCAzLCAxKSwgIHNmPTEsICBzbj0xZS0xMCkNCmBgYA0KDQpgYGB7cn0NCndyaXRlTGluZXMocmVhZExpbmVzKCJOZXdfc3Rhbi5zdGFuIikpDQpzaW11X2ZpdCA8LSBzdGFuKGZpbGU9J05ld19zdGFuLnN0YW4nLCBkYXRhPXNpbXVfZGF0YSwNCiAgICAgICAgICAgICAgICAgd2FybXVwPTAsIGl0ZXI9NDAwMCwgY2hhaW5zPTEsIHNlZWQ9NDk0ODM4LA0KICAgICAgICAgICAgICAgICBhbGdvcml0aG09IkZpeGVkX3BhcmFtIiwgcmVmcmVzaD0xMDAwKQ0KYGBgDQoNCg0KDQpgYGB7cn0NCmVsbCA9IGMoMSwgMiwgMSkNCnNhbmRib3hfZGF0YSA8LSBsaXN0KE4gPSBuLCBlbGwgPSBlbGwsIEQ9MywgeCA9IGRhdGEpDQojc3dlZXAoYXMubWF0cml4KGRhdGEpLCAyLCBlbGwsICIvIikNCmBgYA0KDQpgYGB7cn0NCndyaXRlTGluZXMocmVhZExpbmVzKCJzYW5kYm94LnN0YW4iKSkNCnNpbXVfZml0IDwtIHN0YW4oZmlsZT0nc2FuZGJveC5zdGFuJywgZGF0YT1zYW5kYm94X2RhdGEsDQogICAgICAgICAgICAgICAgIHdhcm11cD0wLCBpdGVyPTQwMDAsIGNoYWlucz0xLCBzZWVkPTQ5NDgzOCwNCiAgICAgICAgICAgICAgICAgYWxnb3JpdGhtPSJGaXhlZF9wYXJhbSIsIHJlZnJlc2g9MTAwMCkNCmBgYA==</div>
+<div id="rmd-source-code">LS0tDQp0aXRsZTogIk5ldyBHUCINCm91dHB1dDogaHRtbF9ub3RlYm9vaw0KLS0tDQoNCg0KYGBge3J9DQpsaWJyYXJ5KHJzdGFuKQ0KbiA8LSA1DQp4MSA8LSBybm9ybShuLCBtZWFuID0gMCwgc2QgPSA1KQ0KeDIgPC0geDEgKyBybm9ybShuLCBtZWFuID0gMCwgc2QgPSAxKQ0KeDMgPC0gMip4Mit4MSsgcm5vcm0obiwgbWVhbiA9IDAsIHNkID0gLjEpDQp5PC0geDMrLjA4KngxK3Jub3JtKG4sIG1lYW4gPSAwLCBzZCA9IC41KQ0KZGF0YSA8LSBkYXRhLmZyYW1lKHgxLCB4MiwgeDMpDQp4MXMgPC0gcm5vcm0obiwgbWVhbiA9IDAsIHNkID0gNCkNCngycyA8LSBybm9ybShuLCBtZWFuID0gMCwgc2QgPSA0KQ0KeDNzIDwtIDIqeDIreDEgKyAuMg0KZGF0YV9wcmVkIDwtIGRhdGEuZnJhbWUoeDFzLCB4MnMsIHgzcykNCmBgYA0KDQoNCmBgYHtyfQ0Kc2ltdV9kYXRhIDwtIGxpc3QoTiA9IG4sRCA9ICAzLCBNID0gbiwgeCA9IGRhdGEseSA9IHksIHhfcHJlZCA9ZGF0YV9wcmVkLCBlbGw9IGMoMiwgMywgMSksICBzZj0xLCAgc249MWUtMTApDQpgYGANCg0KYGBge3J9DQp3cml0ZUxpbmVzKHJlYWRMaW5lcygiTmV3X3N0YW4uc3RhbiIpKQ0Kc2ltdV9maXQgPC0gc3RhbihmaWxlPSdOZXdfc3Rhbi5zdGFuJywgZGF0YT1zaW11X2RhdGEsDQogICAgICAgICAgICAgICAgIHdhcm11cD0wLCBpdGVyPTQwMDAsIGNoYWlucz0xLCBzZWVkPTQ5NDgzOCwNCiAgICAgICAgICAgICAgICAgYWxnb3JpdGhtPSJGaXhlZF9wYXJhbSIsIHJlZnJlc2g9MTAwMCkNCmBgYA0KDQoNCg0KYGBge3J9DQplbGwgPSBjKDEsIDIsIDEpDQpzYW5kYm94X2RhdGEgPC0gbGlzdChOID0gbiwgZWxsID0gZWxsLCBEPTMsIHggPSBkYXRhKQ0KI3N3ZWVwKGFzLm1hdHJpeChkYXRhKSwgMiwgZWxsLCAiLyIpDQpgYGANCg0KYGBge3J9DQp3cml0ZUxpbmVzKHJlYWRMaW5lcygic2FuZGJveC5zdGFuIikpDQpzaW11X2ZpdCA8LSBzdGFuKGZpbGU9J3NhbmRib3guc3RhbicsIGRhdGE9c2FuZGJveF9kYXRhLA0KICAgICAgICAgICAgICAgICB3YXJtdXA9MCwgaXRlcj00MDAwLCBjaGFpbnM9MSwgc2VlZD00OTQ4MzgsDQogICAgICAgICAgICAgICAgIGFsZ29yaXRobT0iRml4ZWRfcGFyYW0iLCByZWZyZXNoPTEwMDApDQpgYGA=</div>
 
 
 
