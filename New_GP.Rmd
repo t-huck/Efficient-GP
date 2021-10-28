@@ -1,0 +1,46 @@
+---
+title: "New GP"
+output: html_notebook
+---
+
+
+```{r}
+library(rstan)
+n <- 5
+x1 <- rnorm(n, mean = 0, sd = 5)
+x2 <- x1 + rnorm(n, mean = 0, sd = 1)
+x3 <- 2*x2+x1+ rnorm(n, mean = 0, sd = .1)
+y<- x3+.08*x1+rnorm(n, mean = 0, sd = .5)
+data <- data.frame(x1, x2, x3)
+x1s <- rnorm(n, mean = 0, sd = 4)
+x2s <- rnorm(n, mean = 0, sd = 4)
+x3s <- 2*x2+x1 + .2
+data_pred <- data.frame(x1s, x2s, x3s)
+```
+
+
+```{r}
+simu_data <- list(N = n,D =  3, M = n, x = data, xpred =data_pred, ell= c(2, 3, 1),  sf=1,  sn=1e-10)
+```
+
+```{r}
+writeLines(readLines("New_stan.stan"))
+simu_fit <- stan(file='New_stan.stan', data=simu_data,
+                 warmup=0, iter=4000, chains=1, seed=494838,
+                 algorithm="Fixed_param", refresh=1000)
+```
+
+
+
+```{r}
+ell = c(1, 2, 1)
+sandbox_data <- list(N = n, ell = ell, D=3, x = data)
+#sweep(as.matrix(data), 2, ell, "/")
+```
+
+```{r}
+writeLines(readLines("sandbox.stan"))
+simu_fit <- stan(file='sandbox.stan', data=sandbox_data,
+                 warmup=0, iter=4000, chains=1, seed=494838,
+                 algorithm="Fixed_param", refresh=1000)
+```
